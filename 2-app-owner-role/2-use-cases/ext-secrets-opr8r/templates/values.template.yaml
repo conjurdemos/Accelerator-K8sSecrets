@@ -1,0 +1,7 @@
+namespace: SetWithHelm
+JWT_SERVICE_ACCOUNT: {{JWT_SERVICE_ACCOUNT}}
+APP_IMAGE: {{APP_IMAGE}}
+DB_HOSTNAME: data/vault/{{SAFE_NAME}}/{{MYSQL_ACCOUNT_NAME}}/address
+DB_NAME: data/vault/{{SAFE_NAME}}/{{MYSQL_ACCOUNT_NAME}}/Database
+DB_UNAME: data/vault/{{SAFE_NAME}}/{{MYSQL_ACCOUNT_NAME}}/username
+DB_PWD: data/vault/{{SAFE_NAME}}/{{MYSQL_ACCOUNT_NAME}}/password

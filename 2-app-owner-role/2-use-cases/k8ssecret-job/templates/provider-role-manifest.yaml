@@ -1,0 +1,31 @@
+# Defines a Role in the namespace for secrets access
+# and updating, then binds the Role to the existing
+# service account.
+# The Conjur Secrets Provider runs as the service
+# account, thereby gaining the ability to get and
+# update secrets in the namespace.
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: secrets-access
+  namespace: {{APP_NAMESPACE_NAME}}
+rules:
+  - apiGroups: [""]
+    resources: ["secrets"]
+    verbs: [ "get", "update" ]
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  namespace: {{APP_NAMESPACE_NAME}}
+  name: secrets-access-binding
+subjects:
+  - kind: ServiceAccount
+    namespace: {{APP_NAMESPACE_NAME}}
+    name: {{JWT_SERVICE_ACCOUNT}}
+roleRef:
+  kind: Role
+  apiGroup: rbac.authorization.k8s.io
+  name: secrets-access

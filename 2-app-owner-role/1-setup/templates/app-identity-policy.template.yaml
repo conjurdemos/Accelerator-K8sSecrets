@@ -1,0 +1,18 @@
+---
+# Applied at base policy branch: /data/{{JWT_SERVICE_ID}}
+# Annotates the host identity w/ k8s attributes
+# and grants it the workload group role that
+# has permission to authenticate and access secrets.
+
+# Create workload identity
+- !host
+  id: system:serviceaccount:{{APP_NAMESPACE_NAME}}:{{JWT_SERVICE_ACCOUNT}}
+  annotations:
+    authn-jwt/{{JWT_SERVICE_ID}}/sub: system:serviceaccount:{{APP_NAMESPACE_NAME}}:{{JWT_SERVICE_ACCOUNT}}
+
+# Grant workload group role to workload identity
+- !grant
+  roles:
+  - !group workloads		# group w/ authentication & secrets access permissions
+  members:
+  - !host system:serviceaccount:{{APP_NAMESPACE_NAME}}:{{JWT_SERVICE_ACCOUNT}}

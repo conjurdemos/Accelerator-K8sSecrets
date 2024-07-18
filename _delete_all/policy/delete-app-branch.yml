@@ -1,0 +1,7 @@
+# applied at /data
+
+- !delete
+  record: !group k8sxlr8r/workloads
+
+- !delete
+  record: !policy k8sxlr8r

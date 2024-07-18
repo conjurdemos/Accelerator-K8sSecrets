@@ -1,0 +1,22 @@
+[
+ {
+  "Description": "Generic API Key",
+  "StartLine": 100,
+  "EndLine": 101,
+  "StartColumn": 20,
+  "EndColumn": 1,
+  "Match": "PASSWORD=In1t1alR00tPa55w0rd",
+  "Secret": "In1t1alR00tPa55w0rd",
+  "File": "demo-vars.sh",
+  "SymlinkFile": "",
+  "Commit": "495c0a5b2a4d1651b5b9c7c0f7632278317f38a3",
+  "Entropy": 3.5766177,
+  "Author": "Ubuntu",
+  "Email": "ubuntu@ip-10-0-8-125.ca-central-1.compute.internal",
+  "Date": "2024-07-18T16:16:58Z",
+  "Message": "fresh repo",
+  "Tags": [],
+  "RuleID": "generic-api-key",
+  "Fingerprint": "495c0a5b2a4d1651b5b9c7c0f7632278317f38a3:demo-vars.sh:generic-api-key:100"
+ }
+]

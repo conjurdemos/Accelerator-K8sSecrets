@@ -1,0 +1,11 @@
+---
+# Applied at: /conjur/authn-jwt
+# Gives the workload group authentication privileges
+# by granting membership in the authenticator's apps group
+# to the workload group. This allows app owners to create
+# identities and grant them authn permission without access
+# to the /conjur policy branch.
+
+- !grant
+  role: !group {{JWT_SERVICE_ID}}/apps
+  member: !group /data/{{JWT_SERVICE_ID}}/workloads

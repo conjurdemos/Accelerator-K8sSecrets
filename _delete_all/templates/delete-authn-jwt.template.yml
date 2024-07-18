@@ -1,0 +1,17 @@
+# applied at /conjur/authn-jwt
+- !delete
+  record: !variable {{JWT_SERVICE_ID}}/public-keys
+- !delete
+  record: !variable {{JWT_SERVICE_ID}}/issuer
+- !delete
+  record: !variable {{JWT_SERVICE_ID}}/token-app-property
+- !delete
+  record: !variable {{JWT_SERVICE_ID}}/identity-path
+- !delete
+  record: !variable {{JWT_SERVICE_ID}}/audience
+- !delete
+  record: !webservice {{JWT_SERVICE_ID}}
+- !delete
+  record: !group {{JWT_SERVICE_ID}}/consumers
+- !delete
+  record: !policy {{JWT_SERVICE_ID}}

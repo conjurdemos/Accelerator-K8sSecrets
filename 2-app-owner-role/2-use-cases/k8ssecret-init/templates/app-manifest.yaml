@@ -1,0 +1,108 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: app-example-k8s-init
+  name: app-example-k8s-init
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app-example-k8s-init
+  template:
+    metadata:
+      labels:
+        app: app-example-k8s-init
+      annotations:
+        conjur.org/log-level: debug
+    spec:
+      serviceAccountName: {{JWT_SERVICE_ACCOUNT}}
+
+      containers:
+                           # Application image
+      - image: {{APP_IMAGE}}
+        imagePullPolicy: IfNotPresent
+        name: test-app
+        env:
+          - name: DB_HOSTNAME
+            valueFrom:
+              secretKeyRef:
+                name: db-credentials
+                key: DB_HOSTNAME
+
+          - name: DB_NAME
+            valueFrom:
+              secretKeyRef:
+                name: db-credentials
+                key: DB_NAME
+
+          - name: DB_UNAME
+            valueFrom:
+              secretKeyRef:
+                name: db-credentials
+                key: DB_UNAME
+
+          - name: DB_PWD
+            valueFrom:
+              secretKeyRef:
+                name: db-credentials
+                key: DB_PWD
+
+        volumeMounts:
+          - name: secret-volume
+            mountPath: /etc/secret-volume
+
+      initContainers:
+                           # K8s Secrets Provider
+      - image: cyberark/secrets-provider-for-k8s:latest
+        imagePullPolicy: IfNotPresent
+        name: secrets-provider
+        volumeMounts:
+        - name: conjur-status
+          mountPath: /conjur/status
+        - name: jwt-token
+          mountPath: /var/run/secrets/tokens
+        env:
+          - name: JWT_TOKEN_PATH
+            value: /var/run/secrets/tokens/jwt
+
+          - name: CONTAINER_MODE
+            value: init
+
+          - name: MY_POD_NAMESPACE
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.namespace
+
+          - name: K8S_SECRETS
+            value: db-credentials
+
+          - name: SECRETS_DESTINATION
+            value: k8s_secrets
+
+        envFrom:
+          - configMapRef:
+                name: conjur-connect
+
+      volumes:
+        # Map K8s secrets to files (in addition to env vars)
+        - name: secret-volume
+          secret:
+            secretName: db-credentials
+
+        # Contains sentinel files the app container can use to detect
+        #  when Provider creates/updates secrets
+        - name: conjur-status
+          emptyDir:
+            medium: Memory
+
+        # Projected SA token with custom TTL
+        #  & audience value that matches authn-jwt config
+        - name: jwt-token
+          projected:
+            sources:
+              - serviceAccountToken:
+                  path: jwt
+                  expirationSeconds: 6000
+                  audience: conjur

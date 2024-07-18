@@ -1,0 +1,60 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: app-example-k8s-job
+  name: app-example-k8s-job
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app-example-k8s-job
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+  template:
+    metadata:
+      labels:
+        app: app-example-k8s-job
+    spec:
+      containers:
+                           # Application image
+      - image: {{APP_IMAGE}}
+        imagePullPolicy: IfNotPresent
+        name: test-app
+        env:
+          - name: DB_HOSTNAME
+            valueFrom:
+              secretKeyRef:
+                name: db-credentials
+                key: DB_HOSTNAME
+
+          - name: DB_NAME
+            valueFrom:
+              secretKeyRef:
+                name: db-credentials
+                key: DB_NAME
+
+          - name: DB_UNAME
+            valueFrom:
+              secretKeyRef:
+                name: db-credentials
+                key: DB_UNAME
+
+          - name: DB_PWD
+            valueFrom:
+              secretKeyRef:
+                name: db-credentials
+                key: DB_PWD
+
+        volumeMounts:
+          - name: secret-volume
+            mountPath: /etc/secret-volume
+
+      volumes:
+        # Map K8s secrets to files (in addition to env vars)
+        - name: secret-volume
+          secret:
+            secretName: db-credentials

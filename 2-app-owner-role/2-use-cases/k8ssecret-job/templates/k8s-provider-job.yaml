@@ -1,0 +1,62 @@
+---
+# Runs Secrets Provider as a separate job in application mode
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: secrets-provider
+spec:
+  template:
+    metadata:
+      annotations:
+        conjur.org/log-level: debug
+    spec:
+      serviceAccountName: {{JWT_SERVICE_ACCOUNT}}
+      restartPolicy: OnFailure
+      containers:
+                           # K8s Secrets Provider
+      - name: secrets-provider
+        image: cyberark/secrets-provider-for-k8s:latest
+        imagePullPolicy: IfNotPresent
+        volumeMounts:
+        - name: conjur-status
+          mountPath: /conjur/status
+        - name: jwt-token
+          mountPath: /var/run/secrets/tokens
+        env:
+          - name: JWT_TOKEN_PATH
+            value: /var/run/secrets/tokens/jwt
+
+          - name: CONTAINER_MODE
+            value: application
+
+          - name: MY_POD_NAMESPACE
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.namespace
+
+          - name: K8S_SECRETS
+            value: db-credentials
+
+          - name: SECRETS_DESTINATION
+            value: k8s_secrets
+
+        envFrom:
+          - configMapRef:
+                name: conjur-connect
+
+      volumes:
+        # Contains sentinel files the app container can use to detect
+        #  when Provider creates/updates secrets
+        - name: conjur-status
+          emptyDir:
+            medium: Memory
+
+        # Projected SA token with custom TTL
+        #  & audience value that matches authn-jwt config
+        - name: jwt-token
+          projected:
+            sources:
+              - serviceAccountToken:
+                  path: jwt
+                  expirationSeconds: 6000
+                  audience: conjur

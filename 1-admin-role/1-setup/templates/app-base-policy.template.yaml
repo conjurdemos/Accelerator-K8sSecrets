@@ -1,0 +1,9 @@
+---
+# Applied at /data
+# Creates the empty Conjur base policy for workloads
+# running in the cluster & authenticating to
+# the authn-jwt endpoint of the same name
+- !policy
+  id: {{JWT_SERVICE_ID}}
+  body:
+    - !group workloads

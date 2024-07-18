@@ -1,0 +1,17 @@
+# applied at /conjur/authn-jwt
+- !delete
+  record: !variable k8s-minikube/public-keys
+- !delete
+  record: !variable k8s-minikube/issuer
+- !delete
+  record: !variable k8s-minikube/token-app-property
+- !delete
+  record: !variable k8s-minikube/identity-path
+- !delete
+  record: !variable k8s-minikube/audience
+- !delete
+  record: !webservice k8s-minikube
+- !delete
+  record: !group k8s-minikube/consumers
+- !delete
+  record: !policy k8s-minikube

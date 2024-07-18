@@ -1,0 +1,7 @@
+# applied at data/vault
+
+- !delete
+  record: !group {{SAFE_NAME}}-admins
+
+- !delete
+  record: !group {{SAFE_NAME}}/delegation/consumers

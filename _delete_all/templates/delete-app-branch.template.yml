@@ -1,0 +1,7 @@
+# applied at /data
+
+- !delete
+  record: !group {{APP_NAMESPACE_NAME}}/workloads
+
+- !delete
+  record: !policy {{APP_NAMESPACE_NAME}}

@@ -1,0 +1,43 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: app-example-restapi
+  name: app-example-restapi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app-example-restapi
+  template:
+    metadata:
+      labels:
+        app: app-example-restapi
+    spec:
+      serviceAccountName: {{JWT_SERVICE_ACCOUNT}}
+
+      # projected volume for service-account token
+      # https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/#serviceaccount-token-volume-projection
+      volumes:
+      - name: conjur-token
+        projected:
+          sources:
+          - serviceAccountToken:
+              path: conjur-token
+              expirationSeconds: 7200
+              audience: conjur
+
+      containers:
+      - name: test-app
+        image: {{APP_IMAGE}}
+        imagePullPolicy: IfNotPresent
+        volumeMounts:
+        - mountPath: /var/run/secrets/tokens
+          name: conjur-token
+        envFrom:
+        - configMapRef:
+            name: conjur-connect
+        - configMapRef:
+            name: app-config-map
+

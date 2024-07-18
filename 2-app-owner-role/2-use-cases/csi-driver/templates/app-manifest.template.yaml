@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: app-example-csi
+  name: app-example-csi
+spec:
+  selector:
+    matchLabels:
+      app: app-example-csi
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: app-example-csi
+    spec:
+      serviceAccountName: {{JWT_SERVICE_ACCOUNT}}
+      containers:
+        - name: test-app
+          image: {{APP_IMAGE}}
+          imagePullPolicy: IfNotPresent
+          volumeMounts:
+          - name: conjur-csi-volume
+            mountPath: /etc/secret-volume
+            readOnly: true
+      volumes:
+      - name: conjur-csi-volume
+        csi:
+          driver: secrets-store.csi.k8s.io
+          readOnly: true
+          volumeAttributes:
+            secretProviderClass: "db-credentials"

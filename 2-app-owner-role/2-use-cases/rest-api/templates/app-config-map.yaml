@@ -1,0 +1,12 @@
+---
+# Config map holds info for authenticating and IDs of secrets
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config-map
+data:
+  JWT_SERVICE_ID: {{JWT_SERVICE_ID}}
+  DB_HOSTNAME_ID: data/vault/{{SAFE_NAME}}/{{MYSQL_ACCOUNT_NAME}}/address
+  DB_NAME_ID: data/vault/{{SAFE_NAME}}/{{MYSQL_ACCOUNT_NAME}}/Database
+  DB_UNAME_ID: data/vault/{{SAFE_NAME}}/{{MYSQL_ACCOUNT_NAME}}/username
+  DB_PWD_ID: data/vault/{{SAFE_NAME}}/{{MYSQL_ACCOUNT_NAME}}/password

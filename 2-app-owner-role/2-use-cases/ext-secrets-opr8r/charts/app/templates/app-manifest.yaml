@@ -1,0 +1,57 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: app-example-eso
+  name: app-example-eso
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app-example-eso
+  template:
+    metadata:
+      labels:
+        app: app-example-eso
+    spec:
+      serviceAccountName: {{ .Values.JWT_SERVICE_ACCOUNT }}
+
+      containers:
+      - image: {{ .Values.APP_IMAGE }}
+        imagePullPolicy: IfNotPresent
+        name: test-app
+        env:
+          - name: DB_HOSTNAME
+            valueFrom:
+              secretKeyRef:
+                name: conjur-secrets
+                key: DB_HOSTNAME
+
+          - name: DB_NAME
+            valueFrom:
+              secretKeyRef:
+                name: conjur-secrets
+                key: DB_NAME
+
+          - name: DB_UNAME
+            valueFrom:
+              secretKeyRef:
+                name: conjur-secrets
+                key: DB_UNAME
+
+          - name: DB_PWD
+            valueFrom:
+              secretKeyRef:
+                name: conjur-secrets
+                key: DB_PWD
+
+        # also mount secrets at mountpath location
+        volumeMounts:
+          - name: secret-volume
+            mountPath: /etc/secret-volume
+
+      volumes:
+        - name: secret-volume
+          secret:
+            secretName: conjur-secrets

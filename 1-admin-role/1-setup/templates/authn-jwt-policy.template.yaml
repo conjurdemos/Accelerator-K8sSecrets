@@ -1,0 +1,47 @@
+---
+# Applied at /conjur/authn-jwt
+
+# =================================================
+# This policy adds an authn-jwt endpoint and associated variables.
+# The service ID is k8s-xlr8r (Kubernetes Accelerator)
+# The JWKS URI is assumed to be private - public keys are cached
+# in the public-keys variable.
+# =================================================
+
+- !policy
+  id: {{JWT_SERVICE_ID}}
+  annotations:
+    description: authn-jwt endpoint & variables for K8s Secrets Accelerator
+  body:
+
+    - !webservice
+      annotations:
+        description: authn-jwt endpoint for K8s Secrets Accelerator
+
+    - !webservice
+      id: status
+      annotations:
+        description: endpoint for checking authn-jwt endpoint status 
+  
+    # vars for ocp/k8s api url & access creds
+    - !variable public-keys
+    - !variable issuer
+    - !variable token-app-property
+    - !variable identity-path
+    - !variable audience
+
+    # Group of applications that can authenticate using this JWT Authenticator
+    - !group apps
+  
+    - !permit
+      role: !group apps
+      privilege: [ read, authenticate ]
+      resource: !webservice
+  
+    # Group of users who can check the status of the JWT Authenticator
+    - !group operators
+  
+    - !permit
+      role: !group operators
+      privilege: [ read ]
+      resource: !webservice status

@@ -1,0 +1,7 @@
+# applied at data/vault
+
+- !delete
+  record: !group K8sSecrets2-admins
+
+- !delete
+  record: !group K8sSecrets2/delegation/consumers
