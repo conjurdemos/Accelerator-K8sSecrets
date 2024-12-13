@@ -27,6 +27,7 @@ instantiate_templates() {
 ####################
 # Create app namespace, copies Conjur golden config map, creates service account
 setup_workload_namespace() {
+  helm repo add cyberark https://cyberark.github.io/helm-charts
   echo
   echo "Creating namespace $APP_NAMESPACE_NAME..."
   kubectl delete ns $APP_NAMESPACE_NAME 2> /dev/null

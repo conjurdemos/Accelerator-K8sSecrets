@@ -8,7 +8,7 @@
 #    https://your-subdomain.cyberark.cloud
 # this value ^^^^^^^^^^^^^^
 
-export CYBERARK_SUBDOMAIN_NAME='<<YOUR_VALUE_HERE>>'
+export CYBERARK_SUBDOMAIN_NAME=cybr-secrets
 
 # check if subdomain set to non-placeholder value
 if [[ "$CYBERARK_SUBDOMAIN_NAME" == '<<YOUR_VALUE_HERE>>' ]]; then
