@@ -79,7 +79,7 @@ setup_cluster_workload_policy() {
 
 ####################
 create_golden_configmap() {
-  helm repo add cyberark https://cyberark.github.io/helm-charts 2> /dev/null
+  helm repo add cyberark --insecure-skip-tls-verify https://cyberark.github.io/helm-charts 2> /dev/null
   helm repo update
 
   # delete namespace to suppress helm "already exists" errors
