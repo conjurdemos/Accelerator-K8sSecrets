@@ -30,7 +30,7 @@ setup_workload_namespace() {
   echo
   echo "Creating namespace $APP_NAMESPACE_NAME..."
   kubectl delete ns $APP_NAMESPACE_NAME 2> /dev/null
-  helm install namespace-prep cyberark/conjur-config-namespace-prep \
+  helm install namespace-prep --insecure-skip-tls-verify cyberark/conjur-config-namespace-prep \
     --create-namespace \
     --namespace $APP_NAMESPACE_NAME \
     --set conjurConfigMap.authnMethod="authn-jwt" \

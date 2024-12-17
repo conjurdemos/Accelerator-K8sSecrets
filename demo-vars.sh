@@ -8,7 +8,7 @@
 #    https://your-subdomain.cyberark.cloud
 # this value ^^^^^^^^^^^^^^
 
-export CYBERARK_SUBDOMAIN_NAME=cybr-secrets
+export CYBERARK_SUBDOMAIN_NAME='<<YOUR_VALUE_HERE>>'
 
 # check if subdomain set to non-placeholder value
 if [[ "$CYBERARK_SUBDOMAIN_NAME" == '<<YOUR_VALUE_HERE>>' ]]; then
@@ -25,7 +25,7 @@ fi
 export DOCKER="docker"
 
 # Safe and account to be created in Privilege Cloud
-export SAFE_NAME=K8sXlr8r
+export SAFE_NAME=K8sxlr8r
 export MYSQL_ACCOUNT_NAME=K8s-MySQL
 
 # The app namespace name is also used for the Conjur base policy ID.

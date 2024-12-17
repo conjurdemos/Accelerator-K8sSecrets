@@ -5,6 +5,12 @@ main() {
   install_kubectl
   install_minikube
   install_helm
+  echo
+  echo
+  echo "vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv"
+  echo "Log out and back in again before starting minikube."
+  echo "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
+  echo
 }
 
 ########################
@@ -18,12 +24,6 @@ install_docker() {
   apt-cache policy docker-ce
   sudo apt install -y docker-ce
   sudo usermod -aG docker ${USER}
-  echo
-  echo
-  echo "vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv"
-  echo "To use docker w/o sudo, log out and back in again."
-  echo "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^"
-  echo
 }
 
 ########################
@@ -52,8 +52,10 @@ install_minikube() {
         echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
         exit -1
   esac
+  echo
+  echo "Minikube installed
   minikube version
-  minikube start --driver=docker
+  echo
 }
 
 ########################
