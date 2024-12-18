@@ -11,8 +11,8 @@ main() {
     exit 0
   fi
   deploy_mysql_db 
-  echo "Waiting for MySQL DB to become available..."
-  sleep 45
+  echo "Waiting one minute for MySQL DB to become available..."
+  sleep 60
   ./init_mysql.sh
 }
 
@@ -25,9 +25,6 @@ clean_mysql() {
 ########################
 deploy_mysql_db() {
   $DOCKER pull $MYSQL_IMAGE
-  if [[ "$PLATFORM" == "openshift" ]]; then
-    $CLI adm policy add-scc-to-user anyuid -z mysql-db -n $DB_NAMESPACE_NAME
-  fi
   mkdir -p ./manifests
   cat ./templates/mysql-manifest.template.yaml				\
     | sed "s#{{ MYSQL_IMAGE_NAME }}#$MYSQL_IMAGE#g"			\
