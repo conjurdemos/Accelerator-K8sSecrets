@@ -1,7 +1,8 @@
 #!/bin/bash -e
 source ../../demo-vars.sh
 
-if [[ "$(uname -o)" == "Linux" ]]; then
+set -x
+if [[ $(uname -o) == *Linux ]]; then
   # build in context of Minikube docker env
   eval $(minikube docker-env)
 fi

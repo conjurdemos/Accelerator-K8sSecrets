@@ -53,7 +53,7 @@ install_minikube() {
         exit -1
   esac
   echo
-  echo "Minikube installed
+  echo "Minikube installed"
   minikube version
   echo
 }
